@@ -1,0 +1,50 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Maven
+target/
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+.mvn/timing.properties
+
+# Compiled Java class
+*.class
+
+# Node / Frontend
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.npm
+.yarn
+
+# IDE & Editor
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+
+# Environment & Secrets
+.env
+.env.local
+*.secret
+
+# Archives
+*.zip
+*.tar.gz
+
+# Log & OS
+*.log
+.DS_Store
+Thumbs.db
