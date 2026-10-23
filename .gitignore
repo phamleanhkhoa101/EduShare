@@ -48,3 +48,6 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+#private docs
+**/private-docs
