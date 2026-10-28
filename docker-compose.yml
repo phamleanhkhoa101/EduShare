@@ -1,0 +1,17 @@
+services:
+  # 1. Database (POSTGRES)
+  postgres:
+    image: postgres:16-alpine
+    container_name: edushare-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-edushare}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
