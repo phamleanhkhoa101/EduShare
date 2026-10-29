@@ -2,6 +2,9 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.1.2'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.diffplug.spotless") version "7.0.2"
+	id 'jacoco'
+	id("org.sonarqube") version "7.5.0.8588"
 }
 
 group = 'com.edushare'
@@ -33,6 +36,39 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+spotless {
+  java {
+    removeUnusedImports()
+    googleJavaFormat("1.27.0")   // has its own section below
+	trimTrailingWhitespace()    // Xóa khoảng trắng thừa cuối dòng
+    endWithNewline()            // Đảm bảo file kết thúc bằng dòng trống
+  }
+}
+
+jacoco {
+    toolVersion = "0.8.15"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+jacocoTestReport {
+    dependsOn test          // Bắt buộc chạy test trước khi tạo report
+    reports {
+        xml.required = true // Bật XML report để SonarCloud đọc được
+        html.required = true
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "phamleanhkhoa101_EduShare"
+    	property "sonar.organization", "phamleanhkhoa101"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths",
+                 "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.java.source", "25"
+    }
 }
 
 tasks.named('test') {

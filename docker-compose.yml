@@ -12,6 +12,42 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-edushare}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend: 
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: edushare-backend
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-edushare}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports: 
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  #3. Frontend web USER
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: edushare-frontend
+    ports: 
+      - "3000:80"
+    depends_on: 
+      - backend
+    restart: unless-stopped
 
 volumes:
   postgres_data:
