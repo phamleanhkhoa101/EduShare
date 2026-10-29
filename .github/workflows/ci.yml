@@ -41,6 +41,7 @@ jobs:
         run: ./gradlew test jacocoTestReport
       
       - name: SonarCloud Scan
+        if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
         env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
