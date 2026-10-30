@@ -5,8 +5,22 @@ spring:
   application:
     name: backend
 
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
-      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
-      - org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:edushare}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate # Hibernate chi kiem tra, khong tu y sua
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+    open-in-view: false #tat de tranh ro ri ket noi DB
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true 
+    locations: classpath:db/migration
